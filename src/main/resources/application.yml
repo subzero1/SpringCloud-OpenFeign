@@ -1,9 +1,9 @@
 # 端口
 server:
-  port: 8771
+  port: 8772
 spring:
   application:
-    name: eureka-client1
+    name: eureka-client2
 # Eureka配置
 eureka:
   instance:
