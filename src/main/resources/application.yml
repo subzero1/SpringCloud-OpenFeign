@@ -1,6 +1,10 @@
 # 端口
 server:
   port: 8772
+  #开启自我保护模式
+  enable-self-preservation: false
+  #清理无效节点,默认60*1000毫秒,即60秒
+  eviction-interval-timer-in-ms: 5000
 spring:
   application:
     name: eureka-client2
@@ -13,4 +17,4 @@ eureka:
     prefer-ip-address: true
   client:
      service-url:
-      defaultZone: http://localhost:8761/eureka
+       defaultZone: http://localhost:8761/eureka,http://localhost:8762/eureka
