@@ -1,8 +1,9 @@
 package com.example.controller;
 
+import com.example.service.FeignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.client.loadbalancer.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,10 @@ import java.util.Map;
 @RequestMapping("/test")
 public class TestController {
 
-    @Autowired
-    private  RestTemplate restTemplate;
-
+//    @Autowired
+//    private  RestTemplate restTemplate;
+@Autowired
+private FeignService feignService;
     @RequestMapping("/t1")
     public Map t1(){
         Map ss=new HashMap();
@@ -32,13 +34,14 @@ public class TestController {
     }
     @RequestMapping("/t2")
     public Map t2(){
-        Map body = restTemplate.getForObject("http://EUREKA-CLIENT1/test/t1", Map.class);
+//        Map body = restTemplate.getForObject("http://EUREKA-CLIENT1/test/t1", Map.class);
+        Map body = feignService.t1();
         body.put("k2","TMD终于调用成功了，真tm不容易");
         return  body;
     }
-    @Bean
-    @LoadBalanced
-    public RestTemplate restTemplate(){
-        return  new RestTemplate();
-    }
+//    @Bean
+//    @LoadBalanced
+//    public RestTemplate restTemplate(){
+//        return  new RestTemplate();
+//    }
 }
