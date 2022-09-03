@@ -18,30 +18,38 @@ import java.util.Map;
 @RequestMapping("/test")
 public class TestController {
 
+
+    @Autowired
+    private FeignService feignService;
+
+    @RequestMapping("/t1")
+    public Map t1() {
+        Map ss = new HashMap();
+        ss.put("v1", new Date());
+        ss.put("v2", "嚯嚯嚯我是服务2");
+        return ss;
+    }
+
+    @RequestMapping("/t2")
+    public Map t2() {
+//        Map body = restTemplate.getForObject("http://EUREKA-CLIENT1/test/t1", Map.class);
+        Map body = feignService.t1();
+        body.put("k2", "TMD终于调用成功了，真tm不容易");
+        return body;
+    }
+
     @Autowired
     private RestTemplate restTemplate;
-@Autowired
-private FeignService feignService;
-    @RequestMapping("/t1")
-    public Map t1(){
-        Map ss=new HashMap();
-        ss.put("v1",new Date());
-        ss.put("v2","嚯嚯嚯我是服务2");
-        return  ss;
-    }
-    @RequestMapping("/t2")
-    public Map t2(){
-        String url="http://EUREKA-CLIENT1/test/t1";
-        url="http://127.0.0.1:8771/test/t1";
-        url="http://EUREKA-CLIENT1/test/t1";
-//        Map body = restTemplate.getForObject(url, Map.class);
-        Map body = feignService.t1();
-        body.put("k2","TMD终于调用成功了，真tm不容易");
-        return  body;
-    }
+
     @Bean
     @LoadBalanced
-    public RestTemplate restTemplate(){
-        return  new RestTemplate();
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    @RequestMapping("/t3")
+    public Map t3() {
+        Map body = restTemplate.getForObject("http://EUREKA-CLIENT1/test/t1", Map.class);
+        return body;
     }
 }
